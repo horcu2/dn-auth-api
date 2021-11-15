@@ -17,12 +17,11 @@ package authservice
 import (
 	"errors"
 	"fmt"
-	"net/http"
-	"time"
-
 	"github.com/shadowshot-x/micro-product-go/authservice/data"
 	"github.com/shadowshot-x/micro-product-go/authservice/jwt"
 	"go.uber.org/zap"
+	"net/http"
+	"time"
 )
 
 // SigninController is the Signin route handler

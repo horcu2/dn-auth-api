@@ -1,21 +1,26 @@
 package main
 
 import (
+	"github.com/shadowshot-x/micro-product-go/authservice"
+	"github.com/shadowshot-x/micro-product-go/authservice/middleware"
+	"github.com/shadowshot-x/micro-product-go/clientclaims"
+	"github.com/shadowshot-x/micro-product-go/productservice"
 	"net/http"
 
 	gohandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
-	"github.com/shadowshot-x/micro-product-go/authservice"
-	"github.com/shadowshot-x/micro-product-go/authservice/middleware"
-	"github.com/shadowshot-x/micro-product-go/clientclaims"
-	"github.com/shadowshot-x/micro-product-go/productservice"
 	"go.uber.org/zap"
 )
 
 func main() {
 	log, _ := zap.NewProduction()
-	defer log.Sync()
+	defer func(log *zap.Logger) {
+		err := log.Sync()
+		if err != nil {
+
+		}
+	}(log)
 
 	log.Info("Starting...")
 
@@ -52,7 +57,7 @@ func main() {
 	claimsRouter.Use(tm.TokenValidationMiddleware)
 
 	//Initialize the Gorm connection
-	pc.InitGormConnection()
+	pc.InitPgGormConnection()
 	productRouter := mainRouter.PathPrefix("/product").Subrouter()
 	productRouter.HandleFunc("/getprods", pc.GetAllProductsHandler).Methods("GET")
 	productRouter.HandleFunc("/addprod", pc.AddProductHandler).Methods("POST")
@@ -63,7 +68,7 @@ func main() {
 	// HTTP Server
 	// Add Time outs
 	server := &http.Server{
-		Addr:    "127.0.0.1:9090",
+		Addr:    "127.0.0.1:9092",
 		Handler: ch(mainRouter),
 	}
 	err = server.ListenAndServe()
