@@ -5,12 +5,23 @@ import (
 	"github.com/shadowshot-x/micro-product-go/authservice/middleware"
 	"github.com/shadowshot-x/micro-product-go/clientclaims"
 	"github.com/shadowshot-x/micro-product-go/productservice"
+	"html/template"
+	"log"
 	"net/http"
 
 	gohandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"go.uber.org/zap"
+)
+
+type templateData struct {
+	Message string
+}
+
+var (
+	data templateData
+	tmpl *template.Template
 )
 
 func main() {
@@ -38,6 +49,13 @@ func main() {
 	dc := clientclaims.NewDownloadController(log)
 	tm := middleware.NewTokenMiddleware(log)
 	pc := productservice.NewProductController(log)
+
+	// listen to the home route
+	http.HandleFunc("/", home)
+
+	// and the deployment route
+	fs := http.FileServer(http.Dir("template/static"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	// We will create a Subrouter for Authentication service
 	// route for sign up and signin. The Function will come from auth-service package
@@ -74,5 +92,14 @@ func main() {
 	err = server.ListenAndServe()
 	if err != nil {
 		log.Error("Error Booting the Server", zap.Error(err))
+	}
+}
+
+func home(w http.ResponseWriter, r *http.Request) {
+	log.Printf("Hello from Cloud Code! Received request: %s %s", r.Method, r.URL.Path)
+	if err := tmpl.Execute(w, data); err != nil {
+		msg := http.StatusText(http.StatusInternalServerError)
+		log.Printf("template.Execute: %v", err)
+		http.Error(w, msg, http.StatusInternalServerError)
 	}
 }
