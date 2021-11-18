@@ -1,6 +1,6 @@
 # To learn more about the skaffold.yaml schema visit
 # https://skaffold.dev/docs/references/yaml/
-apiVersion: skaffold/v2beta19
+apiVersion: skaffold/v2beta12
 kind: Config
 build:
   tagPolicy:
