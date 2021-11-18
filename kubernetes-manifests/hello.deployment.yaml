@@ -21,11 +21,9 @@ spec:
       - name: server
         image: us-east4-docker.pkg.dev/doctornow-84c00/containers/dn-auth-api
         ports:
-        - containerPort: 8080
+          - name: http
+            containerPort: 9092
+            protocol: TCP
         env:
         - name: PORT
-          value: "8080"
-        readinessProbe:
-          tcpSocket:
-            port: 9092
-          initialDelaySeconds: 5
+          value: "9092"

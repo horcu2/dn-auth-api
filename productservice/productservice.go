@@ -31,11 +31,11 @@ type ProductController struct {
 }
 
 const (
-	host     = "dnprofilepostgresql-postgresql-svc"
+	host     = "35.223.83.195"
 	port     = 5432
-	user     = "docnow"
-	password = "UA4Yw89UE2HE"
-	dbname   = "dnporfilepostgresql"
+	user     = "postgres"
+	password = "Rj1GhiWQUxsH"
+	dbname   = "postgres"
 )
 
 // NewProductController returns a frsh Upload controller
@@ -92,7 +92,7 @@ func (ctrl *ProductController) InitPgGormConnection() {
 	if err != nil {
 		panic(err)
 	}
-	defer db.Close()
+	//defer db.Close()
 
 	fmt.Println("Successfully connected!")
 	db.Debug().AutoMigrate(&store.Product{})

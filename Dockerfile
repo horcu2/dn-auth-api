@@ -29,4 +29,5 @@ ENV GOTRACEBACK=single
 WORKDIR /api
 COPY --from=build /app .
 COPY template ./template
+COPY .env ./.env
 ENTRYPOINT ["./app"]

@@ -50,12 +50,9 @@ func main() {
 	tm := middleware.NewTokenMiddleware(log)
 	pc := productservice.NewProductController(log)
 
-	// listen to the home route
-	http.HandleFunc("/", home)
-
-	// and the deployment route
-	fs := http.FileServer(http.Dir("template/static"))
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
+	// readiness
+	homeRouter := mainRouter.PathPrefix("/").Subrouter()
+	homeRouter.HandleFunc("/health", home).Methods("GET")
 
 	// We will create a Subrouter for Authentication service
 	// route for sign up and signin. The Function will come from auth-service package
