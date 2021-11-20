@@ -93,7 +93,7 @@ func main() {
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
-	log.Printf("Hello from Cloud Code! Received request: %s %s", r.Method, r.URL.Path)
+	log.Printf("Received request: %s %s", r.Method, r.URL.Path)
 	if err := tmpl.Execute(w, data); err != nil {
 		msg := http.StatusText(http.StatusInternalServerError)
 		log.Printf("template.Execute: %v", err)
