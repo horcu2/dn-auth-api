@@ -1,0 +1,43 @@
+steps:
+  - name: gcr.io/k8s-skaffold/pack
+    args:
+      - build
+      - '$_GCR_HOSTNAME/$PROJECT_ID/$_REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
+      - '--builder=gcr.io/buildpacks/builder:v1'
+      - '--path=.'
+    id: Buildpack
+    entrypoint: pack
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - '$_GCR_HOSTNAME/$PROJECT_ID/$_REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
+    id: Push
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    args:
+      - beta
+      - deploy
+      - releases
+      - create
+      - $_RELEASE_NUMBER
+      - '--project=$PROJECT_ID'
+      - '--region=$_DEPLOY_REGION'
+      - '--delivery-pipeline=$_PIPELINE'
+    id: Deploy
+    entrypoint: gcloud
+images:
+  - '$_GCR_HOSTNAME/$PROJECT_ID/$_REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
+options:
+  substitutionOption: ALLOW_LOOSE
+substitutions:
+  _SERVICE_NAME: dn-auth-api
+  _DEPLOY_REGION: us-central1
+  _GCR_HOSTNAME: us-east4-docker.pkg.dev
+  _LABELS: gcb-trigger-id=8070a869-713f-4763-ac90-2c4a0b11ccd5
+  _TRIGGER_ID: 8070a869-713f-4763-ac90-2c4a0b11ccd5
+  _PLATFORM: managed
+  _PIPELINE: doctornow-delivery
+  _REPO_NAME: containers
+tags:
+  - gcp-cloud-build-deploy-cloud-run
+  - gcp-cloud-build-deploy-cloud-run-managed
+  - dn-auth-api
