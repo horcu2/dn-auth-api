@@ -18,7 +18,7 @@ steps:
       - deploy
       - releases
       - create
-      - $BUILD_ID
+      - 'dn-auth'
       - '--project=$PROJECT_ID'
       - '--region=$_DEPLOY_REGION'
       - '--delivery-pipeline=$_PIPELINE'
