@@ -18,7 +18,7 @@ steps:
       - deploy
       - releases
       - create
-      - $_RELEASE_NUMBER
+      - $BUILD_ID
       - '--project=$PROJECT_ID'
       - '--region=$_DEPLOY_REGION'
       - '--delivery-pipeline=$_PIPELINE'
