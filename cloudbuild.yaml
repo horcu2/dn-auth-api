@@ -16,6 +16,7 @@ steps:
     args:
       - beta
       - deploy
+      - $_SERVICE_NAME
       - releases
       - create
       - $_RELEASE_NUMBER
