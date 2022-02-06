@@ -35,7 +35,7 @@ substitutions:
   _LABELS: gcb-trigger-id=8070a869-713f-4763-ac90-2c4a0b11ccd5
   _TRIGGER_ID: 8070a869-713f-4763-ac90-2c4a0b11ccd5
   _PLATFORM: managed
-  _PIPELINE: doctornow-delivery
+  _PIPELINE: web-app
   _REPO_NAME: containers
 tags:
   - gcp-cloud-build-deploy-cloud-run
