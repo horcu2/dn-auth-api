@@ -41,3 +41,4 @@ tags:
   - gcp-cloud-build-deploy-cloud-run
   - gcp-cloud-build-deploy-cloud-run-managed
   - dn-auth-api
+  - dn-svc
